@@ -38,7 +38,7 @@ export async function POST(request: Request) {
 
     // 4. Construir el Link
     const baseUrl = process.env.NODE_ENV === 'production' 
-      ? 'https://mark-ii-utm.vercel.app' 
+      ? 'https://mark2-utm.vercel.app' 
       : 'http://localhost:3000';
       
     const magicLink = `${baseUrl}/validar?token=${token}`;
