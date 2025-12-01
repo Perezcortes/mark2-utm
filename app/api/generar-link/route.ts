@@ -120,7 +120,7 @@ export async function POST(request: Request) {
     `;
 
     await transporter.sendMail({
-      from: `"Identidad UTM" <${process.env.SMTP_USER}>`,
+      from: `"Servicios Escolares UTM" <${process.env.SMTP_USER}>`,
       to: student.email,
       subject: 'Verificación de Identidad Digital UTM', 
       html: htmlContent,

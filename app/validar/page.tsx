@@ -120,7 +120,7 @@ export default async function ValidarPage({ searchParams }: Props) {
            </div>
         </div>
 
-        <p className="text-[10px] text-gray-600 pt-6 text-center">
+        <p className="text-[14px] text-gray-600 pt-6 text-center">
           Esta ventana se puede cerrar de forma segura.
         </p>
 
