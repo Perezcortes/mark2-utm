@@ -1,65 +1,124 @@
-import Image from "next/image";
+'use client';
+import { useState } from 'react';
+// 1. IMPORTAMOS LA FUNCIÓN TOAST
+import { toast } from 'sonner';
+import { Loader2, Shield, ArrowRight } from 'lucide-react'; // Iconos opcionales si instalaste lucide
 
 export default function Home() {
+  const [matricula, setMatricula] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [linkPrueba, setLinkPrueba] = useState('');
+
+  const solicitarCredencial = async () => {
+    // Validación básica: que no esté vacío
+    if (!matricula.trim()) {
+      toast.warning('Campo vacío', { description: 'Por favor escribe tu matrícula.' });
+      return;
+    }
+
+    setIsLoading(true);
+    setLinkPrueba(''); // Limpiamos link anterior
+
+    try {
+      const res = await fetch('/api/generar-link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ matricula }),
+      });
+      
+      const data = await res.json();
+      
+      if (res.ok && data.success) {
+        // ÉXITO: TOAST VERDE
+        toast.success('¡Enlace enviado!', {
+          description: `Hemos enviado un correo seguro a ${data.message.split(' ').pop()}`, // Intenta extraer el correo del mensaje
+          duration: 5000,
+        });
+        setLinkPrueba(data.debug_link); 
+      } else {
+        // ERROR DE NEGOCIO (Ej. No encontrado): TOAST ROJO
+        // Aquí personalizamos el mensaje para que sea amigable
+        if (data.error === 'Alumno no encontrado') {
+            toast.error('Matrícula no encontrada', {
+                description: 'Verifica que hayas escrito bien tus números. Si el problema persiste, contacta a Servicios Escolares.',
+            });
+        } else {
+            toast.error('Ocurrió un error', { description: data.error });
+        }
+      }
+    } catch (err) {
+      toast.error('Error de conexión', { description: 'Inténtalo de nuevo más tarde.' });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white p-4">
+      
+      <div className="flex flex-col items-center mb-8 space-y-4">
+        <div className="p-4 bg-gray-900 rounded-full ring-1 ring-gray-700">
+            <Shield className="w-12 h-12 text-white" />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+        <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400">
+            Digital ID UTM
+        </h1>
+        <p className="text-gray-500 text-sm tracking-widest uppercase">Protocolo Mark II</p>
+      </div>
+      
+      <div className="w-full max-w-md bg-[#111111] p-8 rounded-2xl border border-gray-800 shadow-2xl">
+        <label className="block mb-3 text-sm font-medium text-gray-400">
+            Matrícula Universitaria
+        </label>
+        
+        <div className="relative group">
+            <input 
+            type="text" 
+            value={matricula}
+            onChange={(e) => setMatricula(e.target.value)}
+            placeholder="Ej: 2025123456"
+            disabled={isLoading}
+            className="w-full p-4 rounded-xl bg-gray-900 text-white border border-gray-800 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all font-mono text-lg placeholder:text-gray-700"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
         </div>
-      </main>
+        
+        <button 
+          onClick={solicitarCredencial}
+          disabled={isLoading}
+          className="w-full mt-6 bg-white hover:bg-gray-200 text-black font-bold py-4 rounded-xl transition-all flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isLoading ? (
+              <>
+                <Loader2 className="animate-spin w-5 h-5" />
+                <span>Procesando...</span>
+              </>
+          ) : (
+              <>
+                <span>Solicitar Acceso</span>
+                <ArrowRight className="w-5 h-5" />
+              </>
+          )}
+        </button>
+
+        {/* Solo mostramos esto en modo desarrollo/prototipo */}
+        {linkPrueba && (
+          <div className="mt-8 p-4 bg-blue-950/30 border border-blue-900 rounded-lg animate-in fade-in slide-in-from-top-2">
+            <p className="text-xs font-bold text-blue-400 mb-2 uppercase tracking-wide">
+                Modo Desarrollo (Simulación de Correo)
+            </p>
+            <p className="text-xs text-gray-400 mb-2">
+                Haz clic abajo como si fueras al correo:
+            </p>
+            <a href={linkPrueba} className="text-sm text-blue-300 underline break-all hover:text-blue-200 transition">
+                {linkPrueba}
+            </a>
+          </div>
+        )}
+      </div>
+      
+      <p className="mt-8 text-xs text-gray-600">
+        Sistema Seguro & Privado • UTM
+      </p>
     </div>
   );
 }
