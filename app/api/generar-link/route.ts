@@ -3,8 +3,6 @@ import { supabase } from '@/app/lib/supabase';
 import { v4 as uuidv4 } from 'uuid';
 import nodemailer from 'nodemailer';
 
-// Eliminamos fs y path porque ya no leemos archivos locales
-
 export async function POST(request: Request) {
   try {
     const { matricula } = await request.json();
@@ -59,7 +57,7 @@ export async function POST(request: Request) {
     const utmGris = '#4a4a4a';
     const logoUrl = 'https://dgesui.ses.sep.gob.mx/sep.subsidioentransparencia.mx/images/universidades/escudos/UTM.png';
 
-    // 6. DISEÑO HTML CORREGIDO (Sin emojis y con logo web)
+    // 6. DISEÑO HTML 
     const htmlContent = `
       <!DOCTYPE html>
       <html>
@@ -124,7 +122,7 @@ export async function POST(request: Request) {
     await transporter.sendMail({
       from: `"Identidad UTM" <${process.env.SMTP_USER}>`,
       to: student.email,
-      subject: 'Verificación de Identidad Digital UTM', // Sin emojis
+      subject: 'Verificación de Identidad Digital UTM', 
       html: htmlContent,
     });
 
