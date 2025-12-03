@@ -1,51 +1,51 @@
 'use client';
 import Link from 'next/link';
-import { ArrowLeft, CreditCard } from 'lucide-react';
+import { ArrowLeft, CreditCard, PlayCircle } from 'lucide-react';
 
 export default function CredencialDigitalPage() {
   return (
     <div className="flex flex-col min-h-screen bg-[#050505] text-white font-sans">
-      
+
       {/* Barra de Navegación */}
       <header className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-[#0a0a0a]/80 backdrop-blur-md z-20">
-        <Link 
-          href="/" 
+        <Link
+          href="/"
           className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Volver al inicio</span>
         </Link>
         <div className="flex items-center gap-2">
-            <CreditCard className="w-4 h-4 text-[#6A1B31]" />
-            <span className="text-sm font-bold tracking-widest uppercase">Tu Credencial</span>
+          <CreditCard className="w-4 h-4 text-[#6A1B31]" />
+          <span className="text-sm font-bold tracking-widest uppercase">Tu Credencial</span>
         </div>
       </header>
 
       {/* Contenedor Principal */}
-      <main className="flex-1 flex flex-col items-center justify-center p-4 md:p-8 relative">
-        
+      <main className="flex-1 relative w-full h-full flex flex-col">
+
         {/* Glow Effect Central */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-900/20 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[800px] h-[500px] bg-[#6A1B31] rounded-full blur-[180px] opacity-10 pointer-events-none"></div>
 
-        {/* Marco del Diseño */}
-        <div className="w-full h-[75vh] max-w-6xl bg-[#111] border border-white/10 rounded-2xl overflow-hidden shadow-2xl relative z-10">
-            <div className="w-full h-full bg-[#0a0a0a] flex items-center justify-center">
-                 {/* Iframe del Diseño Estático */}
-                 <iframe 
-                    style={{ border: 'none' }}
-                    className="w-full h-full"
-                    src="https://embed.figma.com/proto/SYC8LB5srMNqlBTvcvRxPh/MarkII?node-id=163-258&p=f&scaling=min-zoom&content-scaling=fixed&page-id=163%3A240&embed-host=share" 
-                    allowFullScreen
-                    loading="lazy"
-                />
-            </div>
+        <div className="flex-1 w-full h-full relative bg-[#0a0a0a]">
+          {/* Iframe del Diseño Estático */}
+          <iframe
+            style={{ border: 'none' }}
+            className="w-full h-full absolute inset-0"
+            src="https://embed.figma.com/proto/SYC8LB5srMNqlBTvcvRxPh/MarkII?node-id=163-258&p=f&scaling=min-zoom&content-scaling=fixed&page-id=163%3A240&embed-host=share"
+            allowFullScreen
+            loading="eager"
+          />
         </div>
-
-        <p className="mt-6 text-gray-500 text-sm font-mono flex items-center gap-2">
-            Diseño de Alta Fidelidad • Vista Previa
-        </p>
-
       </main>
+
+      {/* Footer minimalista */}
+      <footer className="py-2 text-center border-t border-white/5 bg-[#050505] z-20">
+        <div className="flex items-center justify-center gap-2 text-[10px] text-gray-500 uppercase tracking-widest">
+            <PlayCircle className="w-3 h-3" />
+            <span>Simulación de App en Tiempo Real</span>
+        </div>
+      </footer>
     </div>
   );
 }
