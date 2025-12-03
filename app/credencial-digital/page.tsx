@@ -4,7 +4,7 @@ import { ArrowLeft, CreditCard, PlayCircle } from 'lucide-react';
 
 export default function CredencialDigitalPage() {
   return (
-    <div className="flex flex-col min-h-screen bg-[#050505] text-white font-sans">
+    <div className="flex flex-col min-h-screen bg-[#050505] text-white font-sans overflow-hidden">
 
       {/* Barra de Navegación */}
       <header className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-[#0a0a0a]/80 backdrop-blur-md z-20">
